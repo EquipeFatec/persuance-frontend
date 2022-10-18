@@ -1,0 +1,90 @@
+     /*.card {
+    /*    display: flex;
+    /* modelar os componentes*/
+     /*flex-direction: column;
+    /*Deixa os componentes em formato de coluna*/
+     /*width: 35%;
+    /*margem interna*/
+     /*padding: 20px;
+    margin-top: 10%;
+    /*sombra do componente e eixos x(quanto maior mais deslocado pra direita é a sua sombra)
+    ,y(quanto maior mais deslocado pra baixo é a sua sombra),z (tanto de sombra)  */
+     /*box-shadow: #1111 10px 10px 10px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    
+
+} 
+
+.card input {
+    height: 30px;
+    /*Arredonda as bordas*/
+     /*border-radius: 5px;
+    margin-bottom: 10px;
+    /*solid é para que a borda seja continua*/
+     /*border: solid 1px rgba(61, 61, 61, 0.719);
+    padding-left: 15px;
+    width: 100%;
+}
+
+
+/*Quando seu input estiver selecionado vai acontecer ...*/
+     /*.card input:focus {
+    /*modifica a borda que vem por padrão*/
+     /*outline: none;
+    border: solid 2px rgb(110, 74, 141);
+}
+
+.aboutTeste {
+    display: flex;
+    /*Separa os componentes em distâncias iguais com distâncias tambem nas laterais*/
+     /*justify-content: space-around;
+    background-color: rgba(242, 248, 248, 0.452);
+
+
+}
+
+    /*.card h2 {
+    /*cima, direita, baixo, esquerda*/
+     /*margin: 5px 0 10px 0;
+    color: rgb(70, 67, 67);
+}
+
+.absolute {
+    top: 25px;
+    margin-left: auto;
+    position: absolute;
+    text-align: center;
+    width: calc(100% - 40px);
+}
+
+.buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+button {
+    display: flex;
+    border-radius: 5px !important;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    margin-top: 10px;
+    background-color: rgb(95, 135, 223);
+    color: rgb(252, 248, 248);
+    border-color: rgb(95, 135, 223);
+    /*espessura do componente*/
+     /*font-weight: bold;
+    transition: 0.2s;
+}
+
+/*ao passar o mouse em cima ...*/
+     /*button:hover {
+    background-color: #ffff;
+    color: rgb(95, 135, 223);
+} */
