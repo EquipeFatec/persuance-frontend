@@ -28,6 +28,8 @@ const routes = [
     path: '/administrador',
     name: 'administrador',
     component: AdmView
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
