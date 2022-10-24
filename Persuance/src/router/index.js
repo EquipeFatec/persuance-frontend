@@ -28,6 +28,8 @@ const routes = [
     path: '/administrador',
     name: 'administrador',
     component: AdmView
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
@@ -56,7 +58,7 @@ router.beforeEach((to, from) => {
 
   // booleana que verifica se usuario esta numa tela pertencente aos admins
   const isTelaAdmin = to.name.includes('tela-upload') || 
-                      to.name.includes('Dashboard')
+                   to.name.includes('Dashboard')
 
   if (isTelaAdmin && !estaAutenticado) {
     return { name: 'about' }
