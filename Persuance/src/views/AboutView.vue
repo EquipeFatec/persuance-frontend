@@ -1,6 +1,7 @@
 <template>
     <Toast />
     <div class="about">
+        <Menu></Menu>
         <div>
             <!-- <img alt="logo" src="../assets/logo_1.png" height="200" class="mr-2"> -->
             <img alt="logo" src="../assets/logoo.png" height="200" class="mr-2">
@@ -15,7 +16,7 @@
         </div>
         <div class=" p-button-rounded">
             <Button label="Consultar Textos" class="p-button-outlined p-button-info" />
-            <Button label="Consultar arquivos" class="p-button-outlined p-button-info" />
+            <!-- <Button label="Consultar arquivos" class="p-button-outlined p-button-info" /> -->
         </div>
 
         <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
@@ -43,7 +44,6 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import InputText from 'primevue/inputtext';
-import Menubar from 'primevue/menubar';
 import { ref } from 'vue';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
@@ -53,6 +53,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import axios from "axios";
 import Toast from 'primevue/toast';
+import Menu from '../components/Menu.vue';
 
 
 export default {
@@ -62,14 +63,14 @@ export default {
         Card,
         Panel,
         InputText,
-        Menubar,
         Image,
         Button,
         Word,
         Dialog,
         Column,
         DataTable,
-        Toast
+        Toast,
+        Menu
 
 
     },

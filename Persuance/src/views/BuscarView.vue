@@ -1,52 +1,47 @@
 <template>
-    <Toast>
-        <div class="buscar">
-            <div class="menu">
-                <MegaMenu :model="items" />
-            </div>
-            <div class="card">
-                        <Card style="width: 100%; height: 100%; margin-bottom: 80%">
-                            <template #title> Palavra </template>
-                            <template #content>
-                                <div class="card">
-                                    <div class=".p-input">
-                                        <span class="p-float-label">
-                                            <InputText type="text" v-model="palavra" placeholder="Palavra" />
-                                            <Button label="Editar" type="button" class="buttons"
-                                                style="margin-left: 5px" @click="displayModalBusca" />
-                                        </span>
-                                            <h2> Cadastro de palavras</h2>
-                                            <input type="text" name="Palavra" placeholder="Palavra" id="palavra">
-                                            <input type="text" name="Conjucacao" placeholder="Conjunção"
-                                                id="conjucacao">
-                                            <input type="text" name="Tradução" placeholder="Tradução" id="traducao">
-                                            <input type="text" name="Aprovada" placeholder="Aprovada" id="aprovada">
-                                            <input type="text" name="Significado" placeholder="Significado"
-                                                id="significado">
-                                            <input type="text" name="Exemplo aprovado" placeholder="Exemplo aprovado"
-                                                id="exemplo">
-                                            <Dropdown id="dropdown" v-model="value8" :options="cities"
-                                                        optionLabel="name" />
-                                                    <label for="dropdown"> Classe Gramatical</label>
-                                            <input type="text" name="Classe gramatical" placeholder="Classe gramatical"
-                                                id="classe">
-                                            <input type="text" name="Categoria" placeholder="Categoria" id="categoria">
-                                            <button @click="buscar">Cadastrar</button>
-                                    </div>
-                                </div>
-                            </template>
-                        </card>
-            </div>
+    <Toast />
+    <div class="buscarView">
+        <Button icon="pi pi-user" class="user" style="position: absolute; left: 21px; top: 21px; height: 40px;
+        width: 40px;" @click="login"/>
+        <div>
+            <!-- <img alt="logo" src="../assets/logo_1.png" height="200" class="mr-2"> -->
+            <img alt="logo" src="../assets/logoo.png" height="200" class="mr-2">
+        </div>
+        <div>
+            <span class="p-float-label">
+                <!-- <i class="pi pi-search" /> -->
+                <InputText type="text" v-model="palavra" placeholder="Buscar" />
+                <Button type="button" icon="pi pi-search" class="search" style="margin-left: 5px" @click="buscar" />
 
+            </span>
+        </div>
+        <div class=" p-button-rounded">
+            <Button label="Consultar Textos" class="p-button-outlined p-button-info" />
+            <!-- <Button label="Consultar arquivos" class="p-button-outlined p-button-info" /> -->
         </div>
 
+        <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
+            <div class="card">
 
-    </Toast>
+                <DataTable :value="word" sortMode="multiple" responsiveLayout="scroll">
+                    <Column field="palavra" header="Palavra" :sortable="true"></Column>
+                    <Column field="conjucacao" header="Conjugação" :sortable="true"></Column>
+                    <Column field="traducao" header="Tradução" :sortable="true"></Column>
+                    <Column field="aprovada" header="Aprovação" :sortable="true"></Column>
+                    <Column field="significado" header="Significado" :sortable="true"></Column>
+                    <Column field="exemploAprovado" header="Exemplo Aprovado" :sortable="true"></Column>
+                    <Column field="classeGramatical" header="Classe gramatical" :sortable="true"></Column>
+                    <Column field="categoria" header="Categoria dos nomes técnicos" :sortable="true"></Column>
+
+                </DataTable>
+            </div>
+        </Dialog>
+    </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue';
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import InputText from 'primevue/inputtext';
@@ -54,11 +49,16 @@ import Menubar from 'primevue/menubar';
 import { ref } from 'vue';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
-import axios from 'axios';
+import Word from '@/components/Word.vue';
+import Dialog from 'primevue/dialog';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import axios from "axios";
+import Toast from 'primevue/toast';
+
 
 export default {
-    name: 'BuscarView',
+    name: 'buscarView',
     components: {
         HelloWorld,
         Card,
@@ -67,48 +67,31 @@ export default {
         Menubar,
         Image,
         Button,
-        Dropdown,
+        Word,
+        Dialog,
+        Column,
+        DataTable,
+        Toast
+
 
     },
-    data() {
+    data() { //onde se declara o objetos e variáveis
         return {
-            cities: [
-                { name: 'Verbo', code: 'Verbo' },
-                { name: 'Substantivo', code: 'Substantivo' },
-                { name: '', code: '' },
-                { name: '', code: '' },
-                { name: '', code: '' }
-            ],
-            items: [
-                {
-                    label: 'Configurações da conta', icon: 'pi pi-fw pi-cog',
-                    items: [
-                        [
-                            {
-                                label: 'Nome',
-                                items: [{ label: 'Setting 1.1' }, { label: 'Setting 1.2' }]
-                            },
-                        ]
-                    ]   
+            displayModalBusca: false,
+            word: [{}],
+            palavra: "",
+            			// 		command: () => {
+			// 			this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+            //             // window.location.href= "/AdmView";
+			// 		}
 
-                },
-                {
-                    label: 'Arquivo', icon: 'pi pi-fw pi-cloud-upload',
-                    items: [
-                        [
-                            {
-                                label: 'Nome',
-                                items: [{ label: 'Setting 1.1' }, { label: 'Setting 1.2' }]
-                            }
-                        ]
-                    ]
-                }
-            ]
+            //login:[window.location.href="/login"]
+
         }
     },
-    methods: {
-        buscar() {
 
+    methods: { //todas as funções
+        buscar() {
             this.word = [{}];
 
             if (this.palavra == "") {
@@ -137,23 +120,15 @@ export default {
 
                     })
             }
-        },
-        save() {
-            axios.post("http://localhost:8081/search/save",this.word).then(() => {
-                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000});
-                this.resetForm();
-            })
-                .catch(() => {
-                    this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar o cadastro'})
-                }) 
+
         }, 
-        resetForm(){
-            this.palavra = '';
-            this.conjucacao = '';
-            this.tradutor = '';
+        login(){
+                    window.location.href="/#/login"
+     
         }
+           
         
-        }
+    }
 }
 
 </script>
@@ -165,48 +140,23 @@ export default {
     box-sizing: border-box;
 }
 
-.buscar {
+.buscarView{
     background-color: rgba(242, 248, 248, 0.452);
     height: 100vh;
     justify-content: center;
-    padding: 10px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 0%;
-    margin-right: 50%;
-    margin-bottom: 50%;
 }
-
-.menu {
-    background-color: aqua;
-
-}
-
-.card {
-    flex-direction: column;
-    width: 35%;
-    padding: 20px;
-    margin-top: 10%;
-}
-
-.p-input {
-
-    width: 90px;
-    border-radius: 2px;
-    border-color: rgb(39, 39, 88);
-}
-
 
 .mr-2 {
     width: 270px;
     height: auto;
 }
 
-.p-input-icon-left {
+.p-float-label {
 
     margin-top: 10px;
-
 }
 
 .p-inputtext {
@@ -215,63 +165,30 @@ export default {
     border-color: rgb(39, 39, 88);
 }
 
+.p-button-rounded {
+    margin-top: 15px;
+    display: flex;
+    width: 25%;
+    size: 25px;
+    justify-content: space-around;
+    border-radius: 55px;
+}
+
 .p-button-outlined p-button-info {
     border-color: rgb(70, 70, 175);
 }
 
-.buttons {
-    margin-top: 20px;
+.search {
+    margin-top: 15px;
     display: flex;
-    width: 100%;
-    justify-content: center;
-}
+    width: 25%;
+    size: 25px;
+    justify-content: space-around;
+    border-radius: 55px;
 
-.buttons button:nth-child(1) {
-    margin-right: 50px;
 }
+/* .user{
 
-.buttons button {
-    width: 150px;
-    height: 40px;
-    background: #2196F3;
-    border: solid 1px #2196F3;
-    transition: 0.2s;
-    border-radius: 3px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1rem
-}
-
-.buttons button:hover {
-    background: #fff;
-    color: #2196F3;
-}
-
-
-.p-button.p-component {
-    width: 150px;
-    height: 40px;
-    background: #2196F3;
-    border: solid 1px #2196F3;
-    transition: 0.2s;
-    border-radius: 3px;
-    color: #fff;
-    font-weight: 700;
-    margin-top: 20px;
-    padding: 0;
-    font-size: 1rem
-}
-
-.flex {
-    align-items: center;
-    justify-content: center;
-    width: 150%;
-}
-
-.p-card-content {
-    align-items: center;
-    justify-content: center;
-    width: 150%;
-}
+} */
 </style> >
 

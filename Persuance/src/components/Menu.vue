@@ -1,0 +1,53 @@
+<template>
+    <SplitButton class="menu" id="import" label="Menu" :model="items" style="position: absolute; left: 21px; 
+     top: 21px; ">
+    </SplitButton>
+</template>
+
+
+<script>
+import SplitButton from 'primevue/splitbutton';
+
+export default {
+    name: 'Menu',
+    components: {
+        SplitButton
+
+    },
+    data() {
+        return {
+            items: [
+				{
+					label: 'Buscar palavra',
+					icon: 'pi pi-search',
+					command: () => {
+						//this.$toast.add({severity:'success', summary:'Updated', detail:'Data Updated', life: 3000});
+                        window.location.href= "/";
+					}
+				},
+				{
+					label: 'Cadastrar palavra',
+					icon: 'pi pi-plus',
+					command: () => {
+						//this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+                         window.location.href= "/#/administrador";
+					}
+				},
+                {
+					label: 'Listar palavras',
+					icon: 'pi pi-list',
+					command: () => {
+						//this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+                        //window.location.href= "";
+					}
+				},
+                {
+					label: 'Sair',
+					icon: 'pi pi-times',
+					command: () => {
+						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+					}
+				},
+			]
+        }}}
+</script>

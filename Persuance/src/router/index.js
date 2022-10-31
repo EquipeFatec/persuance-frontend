@@ -20,8 +20,8 @@ const routes = [
     component: TelaUpload
   },
   {
-    path: '/tela-adm',
-    name: 'tela-adm',
+    path: '/home',
+    name: 'home',
     component: BuscarView
   },
   {

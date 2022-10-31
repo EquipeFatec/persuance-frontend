@@ -1,7 +1,6 @@
 <template>
     <div class="aboutTeste">
-        <SplitButton id="import
-        " label="Save" icon="pi pi-plus" :model="items"></SplitButton>
+        <Menu></Menu>
         <div class="card">
             <h2> Cadastro de palavras</h2>
             <input type="text" v-model="palavra" name="Palavra" placeholder="Palavra" id="palavra">
@@ -27,6 +26,7 @@ import Toast from 'primevue/toast';
 import axios from "axios";
 import Dropdown from 'primevue/dropdown';
 import SplitButton from 'primevue/splitbutton';
+import Menu from '../components/Menu.vue';
 
 export default {
     name: 'AdmView',
@@ -35,7 +35,8 @@ export default {
         Toast,
         axios,
         Dropdown,
-        SplitButton
+        SplitButton,
+        Menu
 
     },
     data() {
@@ -55,37 +56,33 @@ export default {
             ],
             items: [
 				{
-					label: 'Update',
-					icon: 'pi pi-refresh',
+					label: 'Buscar palavra',
+					icon: 'pi pi-search',
 					command: () => {
 						this.$toast.add({severity:'success', summary:'Updated', detail:'Data Updated', life: 3000});
+                        window.location.href= "/AboutView";
 					}
 				},
 				{
-					label: 'Delete',
+					label: 'Cadastrar palavra',
+					icon: 'pi pi-plus',
+					command: () => {
+						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+                        // window.location.href= "/AdmView";
+					}
+				},
+                {
+					label: 'Sair',
 					icon: 'pi pi-times',
 					command: () => {
 						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
 					}
 				},
-				{
-					label: 'Vue Website',
-					icon: 'pi pi-external-link',
-					command: () => {
-						window.location.href = 'https://vuejs.org/'
-					}
-				},
-				{
-					label: 'Upload',
-					icon: 'pi pi-upload',
-                    to: '/fileupload'
-				}
 			]
 		}
 	},
     methods:{
         buscar() {
-            debugger
             this.word = [];
             this.aprovada = [];
 
