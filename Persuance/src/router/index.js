@@ -6,6 +6,7 @@ import TelaUpload from '../views/TelaUpload.vue'
 import BuscarView from '@/views/BuscarView.vue'
 import AdmView from '@/views/AdmView.vue'
 import Login from '../views/Login.vue'
+import PalavraList from '../views/PalavraListView.vue'
 
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/palavra-list',
+    name: 'palavra-list',
+    component: PalavraList
   }
 
 
