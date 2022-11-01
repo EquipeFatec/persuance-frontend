@@ -68,7 +68,7 @@
 
 }
 
-button {
+buttonADM {
     display: flex;
     border-radius: 5px !important;
     height: 30px;
@@ -90,7 +90,7 @@ button:hover {
     color: rgb(95, 135, 223);
 }
 
-.dropdown{
+.dropdownADM{
     height: 30px;
     /*Arredonda as bordas*/
     border-radius: 5px;

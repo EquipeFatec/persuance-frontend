@@ -6,14 +6,14 @@
             <input type="text" v-model="palavra" name="Palavra" placeholder="Palavra" id="palavra">
             <input type="text" v-model="word.conjucacao" name="Conjucacao" placeholder="Conjunção" id="conjucacao">
             <input type="text" v-model="word.traducao" name="Tradução" placeholder="Tradução" id="traducao">
-            <Dropdown class="dropdown" id="dropdown" v-model="word.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
+            <DropdownADM class="dropdown" id="dropdown" v-model="word.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
             <input type="text" v-model="word.significado" name="Significado" placeholder="Significado" id="significado">
             <input type="text" v-model="word.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
-            <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
+            <DropdownADM class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
-            <button :modal="true" @click="buscar">Editar</button>
-            <button :modal="true" @click="salvar">Salvar</button>
-            <button :modal="true" @click="excluir">Excluir</button>
+            <buttonADM :modal="true" @click="buscar">Editar</buttonADM>
+            <buttonADM :modal="true" @click="salvar">Salvar</buttonADM>
+            <buttonADM :modal="true" @click="excluir">Excluir</buttonADM>
             
         </div>
 
