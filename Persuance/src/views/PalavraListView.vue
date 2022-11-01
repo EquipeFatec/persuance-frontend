@@ -211,31 +211,6 @@ export default {
 
 <style>
 
-.titulo {
-  text-align: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  color: #292929;
-}
-
-.badge {
-  border-radius: 2px;
-  padding: 0.25em 0.5rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: .3px;
-  background-color: #ffcdd2;
-  color: #c63737;
-}
-
-.status-aprovado {
-  background-color: #c8e6c9;
-  color: #256029;
-}
-
-/* .status-reprovado {
-  background-color: #ffcdd2;
-  color: #c63737;
-} */
+@import "../style/PalavraList.css"
 
 </style>
