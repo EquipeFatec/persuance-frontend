@@ -6,14 +6,14 @@
             <input type="text" v-model="palavra" name="Palavra" placeholder="Palavra" id="palavra">
             <input type="text" v-model="word.conjucacao" name="Conjucacao" placeholder="Conjunção" id="conjucacao">
             <input type="text" v-model="word.traducao" name="Tradução" placeholder="Tradução" id="traducao">
-            <DropdownADM class="dropdown" id="dropdown" v-model="word.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
+            <Dropdown class="dropdown" id="dropdown" v-model="word.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
             <input type="text" v-model="word.significado" name="Significado" placeholder="Significado" id="significado">
             <input type="text" v-model="word.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
-            <DropdownADM class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
+            <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
-            <buttonADM :modal="true" @click="buscar">Editar</buttonADM>
-            <buttonADM :modal="true" @click="salvar">Salvar</buttonADM>
-            <buttonADM :modal="true" @click="excluir">Excluir</buttonADM>
+            <button class="button" :modal="true" @click="buscar">Editar</button>
+            <button class="button" :modal="true" @click="salvar">Salvar</button>
+            <button class="button" :modal="true" @click="excluir">Excluir</button>
             
         </div>
 
@@ -35,7 +35,7 @@ export default {
         Toast,
         axios,
         Dropdown,
-        SplitButton,
+        SplitButton, 
         Menu
 
     },
@@ -54,31 +54,7 @@ export default {
                 { name: 'Sim', code: 'true' },
                 { name: 'Não', code: 'false' },
             ],
-            items: [
-				{
-					label: 'Buscar palavra',
-					icon: 'pi pi-search',
-					command: () => {
-						this.$toast.add({severity:'success', summary:'Updated', detail:'Data Updated', life: 3000});
-                        window.location.href= "/AboutView";
-					}
-				},
-				{
-					label: 'Cadastrar palavra',
-					icon: 'pi pi-plus',
-					command: () => {
-						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
-                        // window.location.href= "/AdmView";
-					}
-				},
-                {
-					label: 'Sair',
-					icon: 'pi pi-times',
-					command: () => {
-						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
-					}
-				},
-			]
+            
 		}
 	},
     methods:{
@@ -115,7 +91,6 @@ export default {
             }
         },
         salvar() {
-            debugger
             if(this.word != []){
                 this.wordToSave = {
                     id: null,

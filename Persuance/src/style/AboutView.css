@@ -3,8 +3,11 @@
     margin: 0;
     box-sizing: border-box;
 }
+.teste{
+    width: 100%;
+}
 
-.buscarView{
+.about {
     background-color: rgba(242, 248, 248, 0.452);
     height: 100vh;
     justify-content: center;
@@ -53,4 +56,7 @@
 }
 .p-inputtext.p-component{
     width: 400px !important;
+}
+.grid{
+    background-color: rgba(242, 248, 248, 0.452);
 }

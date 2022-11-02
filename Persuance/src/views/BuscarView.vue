@@ -16,12 +16,27 @@
             </span>
         </div>
         <div class=" p-button-rounded">
-            <Button label="Consultar Textos" class="p-button-outlined p-button-info" />
+            <Button label="Consultar Textos" @click="openModalTexto" class="p-button-outlined p-button-info" />
             <!-- <Button label="Consultar arquivos" class="p-button-outlined p-button-info" /> -->
         </div>
 
+
+        <Dialog header="Consulta de texto" v-model:visible="displayModalTexto" :style="{width: '50vw'}" :modal="true">
+        <div class="grid">
+            <div class="col-12 md:col-4 p-5">
+                <ScrollPanel style="width: 100%; height: 200px">
+                        <h3><b>1.Inserção de dados</b></h3>
+                        A inserção de <span class="colorRed">dados</span> tem como objetivo popular o sistema para que seja possível a visualização dos dados através dos gráficos e análises presentes no sistema. Para realizar a inserção de dados, o usuário deve:
+                        <p>No menu lateral direito, clicar no  <span class="colorYellow">ícone</span>  “Inserir CSV”, botão “Choose” em <span class="colorYellow">seguida</span> selecionar o arquivo CSV desejado, após a escolha do CSV, clicar no botão Abrir e posteriormente no botão “Upload“.</p>
+                        <p>No menu <span class="colorRed">lateral</span> direito, clicar no ícone “Inserir CSV”, abrir o local onde o arquivo CSV se encontra, em seguida arrastar o arquivo CSV para a área indicada “Arraste e solte arquivos para Upload” e posteriormente no botão “Upload“.</p>
+                        
+                   
+                </ScrollPanel>
+            </div>
+         </div>
+        </Dialog> 
         <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
-            <div class="card">
+            <div class="bCard">
 
                 <DataTable :value="word" sortMode="multiple" responsiveLayout="scroll">
                     <Column field="palavra" header="Palavra" :sortable="true"></Column>
@@ -55,6 +70,8 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import axios from "axios";
 import Toast from 'primevue/toast';
+import Splitter from 'primevue/splitter';
+import SplitterPanel from 'primevue/splitterpanel';
 
 
 export default {
@@ -71,13 +88,16 @@ export default {
         Dialog,
         Column,
         DataTable,
-        Toast
+        Toast,
+        Splitter,
+        SplitterPanel
 
 
     },
     data() { //onde se declara o objetos e variáveis
         return {
             displayModalBusca: false,
+            displayModalTexto: false,
             word: [{}],
             palavra: "",
             			// 		command: () => {
@@ -91,6 +111,9 @@ export default {
     },
 
     methods: { //todas as funções
+        openModalTexto(){
+        this.displayModalTexto = true;
+        },
         buscar() {
             this.word = [{}];
 
@@ -133,62 +156,8 @@ export default {
 
 </script>
 
-<style>
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.buscarView{
-    background-color: rgba(242, 248, 248, 0.452);
-    height: 100vh;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.mr-2 {
-    width: 270px;
-    height: auto;
-}
-
-.p-float-label {
-
-    margin-top: 10px;
-}
-
-.p-inputtext {
-    width: 500px;
-    border-radius: 9px;
-    border-color: rgb(39, 39, 88);
-}
-
-.p-button-rounded {
-    margin-top: 15px;
-    display: flex;
-    width: 25%;
-    size: 25px;
-    justify-content: space-around;
-    border-radius: 55px;
-}
-
-.p-button-outlined p-button-info {
-    border-color: rgb(70, 70, 175);
-}
-
-.search {
-    margin-top: 15px;
-    display: flex;
-    width: 25%;
-    size: 25px;
-    justify-content: space-around;
-    border-radius: 55px;
-
-}
-/* .user{
-
-} */
-</style> >
+<style scoped>
+@import "../style/Buscar.css";
+@import "../style/colors.css";
+</style>
 

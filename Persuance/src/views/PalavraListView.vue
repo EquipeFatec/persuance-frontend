@@ -1,5 +1,7 @@
 <template>
   <div class="list">
+    <Menu></Menu>
+
     <h1 class="titulo">Tela de Filtros</h1>
     <DataTable
       :value="words"
@@ -8,7 +10,7 @@
       :rowHover="true"
       v-model:filters="filters"
       :loading="loading"
-      :rowsPerPageOptions="[5, 10, 25, 50]"
+      :rowsPerPageOptions="[2, 5, 10, 25, 50]"
       :globalFilterFields="['palavra','traducao']"
       dataKey="id"
       showGridLines
@@ -156,6 +158,7 @@ import Dropdown from "primevue/dropdown";
 import axios from "axios";
 import { FilterMatchMode } from "primevue/api";
 import PalavraService from "../services/PalavraService";
+import Menu from '../components/Menu.vue';
 
 export default {
   name: "PalavraListView",
@@ -165,7 +168,8 @@ export default {
     InputText,
     ColumnGroup,
     Row,
-    Dropdown
+    Dropdown,
+    Menu
   },
   data() {
     return {
