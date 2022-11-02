@@ -106,7 +106,7 @@ export default {
                 };
             }
             axios.post("http://localhost:8081/search/save", this.wordToSave).then(() => {
-                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000});
+                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000, detail:'Palavra cadastrada com sucesso'});
                 this.resetForm();
             })
                 .catch(() => {

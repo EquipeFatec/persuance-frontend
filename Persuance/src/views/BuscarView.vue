@@ -137,7 +137,7 @@ export default {
                         }
                     }).catch((error) => {
                         this.$toast.add({
-                            severity: 'error', summary: 'Erro no servidor',
+                            severity: 'error', summary: 'Palavra não encontrada',
                             life: 10000
                         })
 
