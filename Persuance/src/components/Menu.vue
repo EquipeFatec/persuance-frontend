@@ -47,6 +47,7 @@ export default {
 					icon: 'pi pi-times',
 					command: () => {
 						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
+						window.location.href="/#/home";
 					}
 				},
 			]
