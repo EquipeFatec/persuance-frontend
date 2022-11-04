@@ -7,4 +7,4 @@
 - Ajustes Criação/Edição/Exclusão de Palavras
  <br/><br/>
 
-# :bulb: <a href="https://github.com/EquipeFatec/api-5/blob/main/documents/Apresentacao-Sprint-3.pdf">Apresentação</a>
+# :bulb: <a href="https://github.com/EquipeFatec/persuance-frontend/blob/main/documents/Apresentacao-Sprint-3.pdf">Apresentação</a>
