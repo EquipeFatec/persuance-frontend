@@ -12,6 +12,9 @@
     align-items: center;
     flex-direction: column;
 }
+.bCard{
+    width: 100%;
+}
 
 .mr-2 {
     width: 270px;

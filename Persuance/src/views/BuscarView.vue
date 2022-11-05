@@ -128,7 +128,14 @@ export default {
                     .then((response) => {
                         if (response.data !== "") {
                             this.displayModalBusca = true;
+                            if(response.data[0].aprovada == true){
+                                response.data[0].aprovada = "Sim"
+                            }
+                            else{
+                                response.data[0].aprovada = "Não"
+                            }
                             this.word = response.data;
+
                         } else {
                             this.$toast.add({
                                 severity: 'error', summary: ' Palavra não encontrada',

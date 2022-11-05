@@ -14,26 +14,55 @@
 
             </span>
         </div>
-        <div class=" p-button-rounded">
-            <Button label="Consultar Textos" @click="openModalTexto" class="p-button-outlined p-button-info" />
-            <!-- <Button label="Consultar arquivos" class="p-button-outlined p-button-info" /> -->
+        <!-- <div class=" p-button-rounded">
+            <Button label="Consultar Textos" @click="abreModal()" class="p-button-outlined p-button-info" />
+             <Button label="Consultar arquivos" class="p-button-outlined p-button-info" />
+        </div> -->
+
+
+        <button @click="abreModal">Verificar texto</button>
+        <!-- <div id="baseModal" class="search-text">
+        <div id="modalText" class="search-text-modal">
+            <h1>Insira o texto</h1>
+            <textarea name="" id="textArea" cols="30" rows="10"></textarea>
+            <button class="btn-verifica" @click="verifica()">Verificar</button>
+            <button class="btn-verifica" @click="fecharModal()">Fechar</button>
         </div>
+        </div> -->
 
-
-        <Dialog header="Consulta de texto" v-model:visible="displayModalTexto" :style="{width: '50vw'}" :modal="true">
+        <Dialog header="Consulta de texto" v-model:visible="abreModal" :style="{width: '50vw'}" :modal="true">
         <div class="grid">
             <div class="col-12 md:col-4 p-5">
                 <ScrollPanel style="width: 100%; height: 200px">
-                        <h3><b>1.Inserção de dados</b></h3>
-                        A inserção de <span class="colorRed">dados</span> tem como objetivo popular o sistema para que seja possível a visualização dos dados através dos gráficos e análises presentes no sistema. Para realizar a inserção de dados, o usuário deve:
-                        <p>No menu lateral direito, clicar no  <span class="colorYellow">ícone</span>  “Inserir CSV”, botão “Choose” em seguida selecionar o arquivo CSV desejado, após a escolha do CSV, clicar no botão Abrir e posteriormente no botão “Upload“.</p>
-                        <p>No menu lateral direito, clicar no ícone “Inserir CSV”, abrir o local onde o arquivo CSV se encontra, em seguida arrastar o arquivo CSV para a área indicada “Arraste e solte arquivos para Upload” e posteriormente no botão “Upload“.</p>
+                    <div id="baseModal" class="search-text">
+                    <div id="modalText" class="search-text-modal">
+                        <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="30" rows="10"></textarea>
+                        <button class="btn-p-button-outlined p-button-info" @click="verifica()">Verificar</button>
+                        <button class="btn-verifica" @click="fecharModal()">Fechar</button>
+                    </div>
+                    </div>
+
+                 </ScrollPanel>
+            </div>
+         </div>
+        </Dialog> 
+    <!-- <Dialog header="Consulta de texto" v-model:visible="displayModalTexto" :style="{width: '50vw'}" :modal="true">
+        <div class="grid">
+            <div class="col-12 md:col-4 p-5">
+                <ScrollPanel style="width: 100%; height: 200px">
+                        <Editor v-model="texto" editorStyle="height: 320px">
+                            <template #toolbar>
+                                <span class="ql-formats">
+                                    <button class="pi pi-check-square" @click="buscarTexto"></button>
+                                </span>
+                            </template>
+                        </Editor>
                         
-                   
                 </ScrollPanel>
             </div>
          </div>
-    </Dialog> 
+    </Dialog>  -->
+
 
         <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
             <div class="teste">
@@ -72,7 +101,8 @@ import Toast from 'primevue/toast';
 import Menu from '../components/Menu.vue';
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
-
+import Editor from 'primevue/editor';
+import Textarea from 'primevue/textarea';
 
 export default {
     name: 'AboutView',
@@ -90,24 +120,94 @@ export default {
         Toast,
         Menu,
         Splitter,
-        SplitterPanel
+        SplitterPanel,
+        Editor,
+        Textarea
 
 
 
     },
     data() { //onde se declara o objetos e variáveis
+        // console.log(word)
         return {
             displayModalBusca: false,
-            displayModalTexto: false,
+            // abreModal: false,
+           
             word: [{}],
-            palavra: ""
+            palavra: "",
+            texto: ""
 
         }
     },
 
     methods: { //todas as funções
-        openModalTexto(){
-      this.displayModalTexto = true;
+            abreModal: function(){
+            document.getElementById("baseModal").style.display = "flex";
+            },
+            fecharModal: function(){
+            document.getElementById("baseModal").style.display = "none";
+            },
+            verifica: function() {
+                debugger
+                var textArea = document
+                .getElementById("textArea")
+                .value.toLowerCase()
+                .split(" ");
+                axios.get("http://localhost:8081/search/texto/" + this.textoArea).then((response) => {
+                debugger
+                response.data;
+                console.log(response.data);
+                response.data.forEach(p => {
+                    if(p.aprovada == 0){
+                        p.palavra.style.color="red"
+                    }
+                    this.texto += p.palavra
+                });
+                console.log(response.data);
+            
+
+            })
+            var modal = document.getElementById("modalText");
+            debugger
+            var textArea = document
+                .getElementById("textArea")
+                .value.toLowerCase()
+                .split(" ");
+            var cont = 0;
+            var palavras = "";
+            var aprovadas = [];
+            var naoAprovadas = [];
+
+            
+            while (cont < textArea.length) {
+                if (aprovadas.includes(textArea[cont])) {
+                textArea[cont] =
+                    "<span style='background:red;'>" + textArea[cont] + "</span>";
+                }
+                if (naoAprovadas.includes(textArea[cont])) {
+                textArea[cont] =
+                    "<span style='background:yellow;'>" + textArea[cont] + "</span>";
+                }
+                palavras += " " + textArea[cont];
+                cont++;
+            }
+            document.getElementById("modalText").innerHTML =
+                "<h1>Texto Verificado</h1><p>" + palavras + "</p><button onclick='fecharModal()'>Fechar</button>";
+        },
+        buscarTexto(){
+            axios.get("http://localhost:8081/search/texto/" + this.texto).then((response) => {
+                
+                this.texto = ""
+                response.data.forEach(p => {
+                    if(p.aprovada == 0){
+                        p.palavra.style.color="red"
+                    }
+                    this.texto += p.palavra
+                });
+                console.log(response.data);
+            })
+
+                 
         },
         buscar() {
             this.word = [{}];
@@ -123,7 +223,14 @@ export default {
                     .then((response) => {
                         if (response.data !== "") {
                             this.displayModalBusca = true;
+                            if(response.data[0].aprovada == true){
+                                response.data[0].aprovada = "Sim"
+                            }
+                            else{
+                                response.data[0].aprovada = "Não"
+                            }
                             this.word = response.data;
+                            
                         } else {
                             this.$toast.add({
                                 severity: 'error', summary: ' Palavra não encontrada',

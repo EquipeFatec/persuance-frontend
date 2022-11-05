@@ -75,6 +75,7 @@ export default {
                     .then((response) => {
                         if (response.data !== "") {
                             this.word = response.data[0];
+
                         } else {
                             this.$toast.add({
                                 severity: 'error', summary: ' Palavra não encontrada',
