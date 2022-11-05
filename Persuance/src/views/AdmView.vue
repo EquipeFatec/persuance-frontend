@@ -1,7 +1,6 @@
 <template>
     <div class="aboutTeste">
-        <SplitButton id="import
-        " label="Save" icon="pi pi-plus" :model="items"></SplitButton>
+        <Menu></Menu>
         <div class="card">
             <h2> Cadastro de palavras</h2>
             <input type="text" v-model="palavra" name="Palavra" placeholder="Palavra" id="palavra">
@@ -12,9 +11,9 @@
             <input type="text" v-model="word.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
             <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
-            <button :modal="true" @click="buscar">Editar</button>
-            <button :modal="true" @click="salvar">Salvar</button>
-            <button :modal="true" @click="excluir">Excluir</button>
+            <button class="button" :modal="true" @click="buscar">Editar</button>
+            <button class="button" :modal="true" @click="salvar">Salvar</button>
+            <button class="button" :modal="true" @click="excluir">Excluir</button>
             
         </div>
 
@@ -27,6 +26,7 @@ import Toast from 'primevue/toast';
 import axios from "axios";
 import Dropdown from 'primevue/dropdown';
 import SplitButton from 'primevue/splitbutton';
+import Menu from '../components/Menu.vue';
 
 export default {
     name: 'AdmView',
@@ -35,7 +35,8 @@ export default {
         Toast,
         axios,
         Dropdown,
-        SplitButton
+        SplitButton, 
+        Menu
 
     },
     data() {
@@ -53,39 +54,11 @@ export default {
                 { name: 'Sim', code: 'true' },
                 { name: 'Não', code: 'false' },
             ],
-            items: [
-				{
-					label: 'Update',
-					icon: 'pi pi-refresh',
-					command: () => {
-						this.$toast.add({severity:'success', summary:'Updated', detail:'Data Updated', life: 3000});
-					}
-				},
-				{
-					label: 'Delete',
-					icon: 'pi pi-times',
-					command: () => {
-						this.$toast.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000});
-					}
-				},
-				{
-					label: 'Vue Website',
-					icon: 'pi pi-external-link',
-					command: () => {
-						window.location.href = 'https://vuejs.org/'
-					}
-				},
-				{
-					label: 'Upload',
-					icon: 'pi pi-upload',
-                    to: '/fileupload'
-				}
-			]
+            
 		}
 	},
     methods:{
         buscar() {
-            debugger
             this.word = [];
             this.aprovada = [];
 
@@ -118,7 +91,6 @@ export default {
             }
         },
         salvar() {
-            debugger
             if(this.word != []){
                 this.wordToSave = {
                     id: null,
@@ -134,7 +106,7 @@ export default {
                 };
             }
             axios.post("http://localhost:8081/search/save", this.wordToSave).then(() => {
-                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000});
+                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000, detail:'Palavra cadastrada com sucesso'});
                 this.resetForm();
             })
                 .catch(() => {

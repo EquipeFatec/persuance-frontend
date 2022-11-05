@@ -68,7 +68,7 @@
 
 }
 
-button {
+.button{
     display: flex;
     border-radius: 5px !important;
     height: 30px;

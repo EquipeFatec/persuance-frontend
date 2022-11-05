@@ -87,7 +87,7 @@ export default {
             const token = result.headers.token;
             localStorage.setItem('userToken', token);
             
-            this.$router.push('/tela-upload');
+            this.$router.push('/');
           }
 
         })
