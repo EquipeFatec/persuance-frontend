@@ -64,7 +64,8 @@ router.beforeEach((to, from) => {
 
   // booleana que verifica se usuario esta numa tela pertencente aos admins
   const isTelaAdmin = to.name.includes('tela-upload') || 
-                      to.name.includes('Dashboard')
+                      to.name.includes('palavra-list') ||
+                      to.name.includes('about')
 
   if (isTelaAdmin && !estaAutenticado) {
     return { name: 'about' }
