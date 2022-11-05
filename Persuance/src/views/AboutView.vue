@@ -1,6 +1,7 @@
 <template>
     <Toast />
     <div class="about">
+        <Menu></Menu>
         <div>
             <!-- <img alt="logo" src="../assets/logo_1.png" height="200" class="mr-2"> -->
             <img alt="logo" src="../assets/logoo.png" height="200" class="mr-2">
@@ -13,13 +14,58 @@
 
             </span>
         </div>
-        <div class=" p-button-rounded">
-            <Button label="Consultar Textos" class="p-button-outlined p-button-info" />
-            <Button label="Consultar arquivos" class="p-button-outlined p-button-info" />
+        <!-- <div class=" p-button-rounded">
+            <Button label="Consultar Textos" @click="abreModal()" class="p-button-outlined p-button-info" />
+             <Button label="Consultar arquivos" class="p-button-outlined p-button-info" />
+        </div> -->
+
+
+        <button @click="abreModal">Verificar texto</button>
+        <!-- <div id="baseModal" class="search-text">
+        <div id="modalText" class="search-text-modal">
+            <h1>Insira o texto</h1>
+            <textarea name="" id="textArea" cols="30" rows="10"></textarea>
+            <button class="btn-verifica" @click="verifica()">Verificar</button>
+            <button class="btn-verifica" @click="fecharModal()">Fechar</button>
         </div>
+        </div> -->
+
+        <Dialog header="Consulta de texto" v-model:visible="abreModal" :style="{width: '50vw'}" :modal="true">
+        <div class="grid">
+            <div class="col-12 md:col-4 p-5">
+                <ScrollPanel style="width: 100%; height: 200px">
+                    <div id="baseModal" class="search-text">
+                    <div id="modalText" class="search-text-modal">
+                        <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="30" rows="10"></textarea>
+                        <button class="btn-p-button-outlined p-button-info" @click="verifica()">Verificar</button>
+                        <button class="btn-verifica" @click="fecharModal()">Fechar</button>
+                    </div>
+                    </div>
+
+                 </ScrollPanel>
+            </div>
+         </div>
+        </Dialog> 
+    <!-- <Dialog header="Consulta de texto" v-model:visible="displayModalTexto" :style="{width: '50vw'}" :modal="true">
+        <div class="grid">
+            <div class="col-12 md:col-4 p-5">
+                <ScrollPanel style="width: 100%; height: 200px">
+                        <Editor v-model="texto" editorStyle="height: 320px">
+                            <template #toolbar>
+                                <span class="ql-formats">
+                                    <button class="pi pi-check-square" @click="buscarTexto"></button>
+                                </span>
+                            </template>
+                        </Editor>
+                        
+                </ScrollPanel>
+            </div>
+         </div>
+    </Dialog>  -->
+
 
         <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
-            <div class="card">
+            <div class="teste">
 
                 <DataTable :value="word" sortMode="multiple" responsiveLayout="scroll">
                     <Column field="palavra" header="Palavra" :sortable="true"></Column>
@@ -43,7 +89,6 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import InputText from 'primevue/inputtext';
-import Menubar from 'primevue/menubar';
 import { ref } from 'vue';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
@@ -53,7 +98,11 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import axios from "axios";
 import Toast from 'primevue/toast';
-
+import Menu from '../components/Menu.vue';
+import Splitter from 'primevue/splitter';
+import SplitterPanel from 'primevue/splitterpanel';
+import Editor from 'primevue/editor';
+import Textarea from 'primevue/textarea';
 
 export default {
     name: 'AboutView',
@@ -62,27 +111,104 @@ export default {
         Card,
         Panel,
         InputText,
-        Menubar,
         Image,
         Button,
         Word,
         Dialog,
         Column,
         DataTable,
-        Toast
+        Toast,
+        Menu,
+        Splitter,
+        SplitterPanel,
+        Editor,
+        Textarea
+
 
 
     },
     data() { //onde se declara o objetos e variáveis
+        // console.log(word)
         return {
             displayModalBusca: false,
+            // abreModal: false,
+           
             word: [{}],
-            palavra: ""
+            palavra: "",
+            texto: ""
 
         }
     },
 
     methods: { //todas as funções
+            abreModal: function(){
+            document.getElementById("baseModal").style.display = "flex";
+            },
+            fecharModal: function(){
+            document.getElementById("baseModal").style.display = "none";
+            },
+            verifica: function() {
+                debugger
+                var textArea = document
+                .getElementById("textArea")
+                .value.toLowerCase()
+                .split(" ");
+                axios.get("http://localhost:8081/search/texto/" + this.textoArea).then((response) => {
+                debugger
+                response.data;
+                console.log(response.data);
+                response.data.forEach(p => {
+                    if(p.aprovada == 0){
+                        p.palavra.style.color="red"
+                    }
+                    this.texto += p.palavra
+                });
+                console.log(response.data);
+            
+
+            })
+            var modal = document.getElementById("modalText");
+            debugger
+            var textArea = document
+                .getElementById("textArea")
+                .value.toLowerCase()
+                .split(" ");
+            var cont = 0;
+            var palavras = "";
+            var aprovadas = [];
+            var naoAprovadas = [];
+
+            
+            while (cont < textArea.length) {
+                if (aprovadas.includes(textArea[cont])) {
+                textArea[cont] =
+                    "<span style='background:red;'>" + textArea[cont] + "</span>";
+                }
+                if (naoAprovadas.includes(textArea[cont])) {
+                textArea[cont] =
+                    "<span style='background:yellow;'>" + textArea[cont] + "</span>";
+                }
+                palavras += " " + textArea[cont];
+                cont++;
+            }
+            document.getElementById("modalText").innerHTML =
+                "<h1>Texto Verificado</h1><p>" + palavras + "</p><button onclick='fecharModal()'>Fechar</button>";
+        },
+        buscarTexto(){
+            axios.get("http://localhost:8081/search/texto/" + this.texto).then((response) => {
+                
+                this.texto = ""
+                response.data.forEach(p => {
+                    if(p.aprovada == 0){
+                        p.palavra.style.color="red"
+                    }
+                    this.texto += p.palavra
+                });
+                console.log(response.data);
+            })
+
+                 
+        },
         buscar() {
             this.word = [{}];
 
@@ -97,7 +223,14 @@ export default {
                     .then((response) => {
                         if (response.data !== "") {
                             this.displayModalBusca = true;
+                            if(response.data[0].aprovada == true){
+                                response.data[0].aprovada = "Sim"
+                            }
+                            else{
+                                response.data[0].aprovada = "Não"
+                            }
                             this.word = response.data;
+                            
                         } else {
                             this.$toast.add({
                                 severity: 'error', summary: ' Palavra não encontrada',
@@ -106,7 +239,7 @@ export default {
                         }
                     }).catch((error) => {
                         this.$toast.add({
-                            severity: 'error', summary: 'Erro no servidor',
+                            severity: 'error', summary: 'Palavra não encontrada',
                             life: 10000
                         })
 
@@ -120,59 +253,8 @@ export default {
 
 </script>
 
-<style>
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.about {
-    background-color: rgba(242, 248, 248, 0.452);
-    height: 100vh;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.mr-2 {
-    width: 270px;
-    height: auto;
-}
-
-.p-float-label {
-
-    margin-top: 10px;
-}
-
-.p-inputtext {
-    width: 500px;
-    border-radius: 9px;
-    border-color: rgb(39, 39, 88);
-}
-
-.p-button-rounded {
-    margin-top: 15px;
-    display: flex;
-    width: 25%;
-    size: 25px;
-    justify-content: space-around;
-    border-radius: 55px;
-}
-
-.p-button-outlined p-button-info {
-    border-color: rgb(70, 70, 175);
-}
-
-.search {
-    margin-top: 15px;
-    display: flex;
-    width: 25%;
-    size: 25px;
-    justify-content: space-around;
-    border-radius: 55px;
-
-}
-</style> >
+<style scoped>
+@import "../style/AboutView.css";
+@import "../style/colors.css";
+</style>
 
