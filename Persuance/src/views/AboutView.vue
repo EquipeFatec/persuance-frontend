@@ -14,59 +14,27 @@
 
             </span>
         </div>
-        <!-- <div class=" p-button-rounded">
-            <Button label="Consultar Textos" @click="abreModal()" class="p-button-outlined p-button-info" />
-             <Button label="Consultar arquivos" class="p-button-outlined p-button-info" />
-        </div> -->
-
-
-        <button @click="abreModal">Verificar texto</button>
-        <!-- <div id="baseModal" class="search-text">
-        <div id="modalText" class="search-text-modal">
-            <h1>Insira o texto</h1>
-            <textarea name="" id="textArea" cols="30" rows="10"></textarea>
-            <button class="btn-verifica" @click="verifica()">Verificar</button>
-            <button class="btn-verifica" @click="fecharModal()">Fechar</button>
-        </div>
-        </div> -->
+        <div class=" p-button-rounded">
+            <Button label="Consultar Textos" v-on:click="abreModal = true;" class="p-button-outlined p-button-info" />             
+        </div>     
 
         <Dialog header="Consulta de texto" v-model:visible="abreModal" :style="{width: '50vw'}" :modal="true">
-        <div class="grid">
-            <div class="col-12 md:col-4 p-5">
-                <ScrollPanel style="width: 100%; height: 200px">
-                    <div id="baseModal" class="search-text">
-                    <div id="modalText" class="search-text-modal">
-                        <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="30" rows="10"></textarea>
-                        <button class="btn-p-button-outlined p-button-info" @click="verifica()">Verificar</button>
-                        <button class="btn-verifica" @click="fecharModal()">Fechar</button>
-                    </div>
-                    </div>
-
-                 </ScrollPanel>
+            <div class="grid">
+                <div class="col-12 md:col-4 p-5">
+                    <ScrollPanel style="width: 100%; height: 1000px">
+                        <div id="baseModal" class="search-text">
+                            <div id="modalText" class="search-text-modal">
+                                <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="70" rows="30"></textarea><br/>
+                                <Button label = "Verificar" v-on:click="verifica()" class="btn-p-button-outlined p-button-info"></Button>                                
+                            </div>
+                        </div>
+                    </ScrollPanel>
+                </div>
             </div>
-         </div>
         </Dialog> 
-    <!-- <Dialog header="Consulta de texto" v-model:visible="displayModalTexto" :style="{width: '50vw'}" :modal="true">
-        <div class="grid">
-            <div class="col-12 md:col-4 p-5">
-                <ScrollPanel style="width: 100%; height: 200px">
-                        <Editor v-model="texto" editorStyle="height: 320px">
-                            <template #toolbar>
-                                <span class="ql-formats">
-                                    <button class="pi pi-check-square" @click="buscarTexto"></button>
-                                </span>
-                            </template>
-                        </Editor>
-                        
-                </ScrollPanel>
-            </div>
-         </div>
-    </Dialog>  -->
-
-
+   
         <Dialog class="busca" v-model:visible="displayModalBusca" :style="{ width: '100vw' }" :modal="true">
             <div class="teste">
-
                 <DataTable :value="word" sortMode="multiple" responsiveLayout="scroll">
                     <Column field="palavra" header="Palavra" :sortable="true"></Column>
                     <Column field="conjucacao" header="Conjugação" :sortable="true"></Column>
@@ -76,7 +44,6 @@
                     <Column field="exemploAprovado" header="Exemplo Aprovado" :sortable="true"></Column>
                     <Column field="classeGramatical" header="Classe gramatical" :sortable="true"></Column>
                     <Column field="categoria" header="Categoria dos nomes técnicos" :sortable="true"></Column>
-
                 </DataTable>
             </div>
         </Dialog>
@@ -89,7 +56,6 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import InputText from 'primevue/inputtext';
-import { ref } from 'vue';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
 import Word from '@/components/Word.vue';
@@ -131,87 +97,86 @@ export default {
         // console.log(word)
         return {
             displayModalBusca: false,
-            // abreModal: false,
+            abreModal: false,
            
             word: [{}],
             palavra: "",
-            texto: ""
+            texto: "",
+            textos:[]
 
         }
     },
 
-    methods: { //todas as funções
-            abreModal: function(){
-            document.getElementById("baseModal").style.display = "flex";
-            },
+    methods: {
+
+            //todas as funções           
             fecharModal: function(){
             document.getElementById("baseModal").style.display = "none";
             },
-            verifica: function() {
-                debugger
-                var textArea = document
-                .getElementById("textArea")
-                .value.toLowerCase()
-                .split(" ");
-                axios.get("http://localhost:8081/search/texto/" + this.textoArea).then((response) => {
-                debugger
-                response.data;
-                console.log(response.data);
-                response.data.forEach(p => {
-                    if(p.aprovada == 0){
-                        p.palavra.style.color="red"
-                    }
-                    this.texto += p.palavra
+
+            verifica()
+            {              
+                var aprovadas = [];
+                var naoAprovadas = [];
+                var duvidas = [];
+                var textoInicial = document.getElementById("textArea").value.toLowerCase();
+               
+
+                if(textoInicial == "pppppppppppp"){
+                    this.$toast.add({
+                    severity: 'warn', summary: 'Digite uma palavra para continuar a busca',
+                    life: 3000                   
                 });
-                console.log(response.data);
-            
+                }else{
 
-            })
-            var modal = document.getElementById("modalText");
-            debugger
-            var textArea = document
-                .getElementById("textArea")
-                .value.toLowerCase()
-                .split(" ");
-            var cont = 0;
-            var palavras = "";
-            var aprovadas = [];
-            var naoAprovadas = [];
+                    axios.get("http://localhost:8081/search/texto/" + textoInicial)
+                    .then((response) => {                                 
+                        var cont = 0;                                             
+                        var textArea = document.getElementById("textArea").value.toLowerCase().trim().split(/\s+/);                  
+                                        
+                        //adiciona nos arrays
+                        while (cont < response.data.length){
+                            if(response.data[cont].aprovada == 0){
+                                naoAprovadas.push(response.data[cont].palavra);
+                            }else if(response.data[cont].aprovada == 1){
+                                aprovadas.push(response.data[cont].palavra);
+                            }else{
+                                duvidas.push(response.data[cont].palavra);
+                            }
+                            cont++;
+                        }
 
-            
-            while (cont < textArea.length) {
-                if (aprovadas.includes(textArea[cont])) {
-                textArea[cont] =
-                    "<span style='background:red;'>" + textArea[cont] + "</span>";
+                        cont = 0;
+                        var palavras = "";
+                    
+                        console.log(naoAprovadas);
+                        while (cont < textArea.length) {                
+                            if (naoAprovadas.includes(textArea[cont])) {
+                                textArea[cont] =
+                                "<span style='background:#ff9999;'>" + textArea[cont] + "</span>";
+                            }
+                            if(duvidas.includes(textArea[cont])){
+                                textArea[cont] = "<span style='background:yellow;'>" + textArea[cont] + "</span>";
+                            }
+                            palavras += " " + textArea[cont];
+                            cont++;
+                        }          
+                        document.getElementById("modalText").innerHTML = 
+                            "<h1>Texto Verificado</h1><p>" + palavras + "</p><Button v-on:onclick='abreModal = true;'>VTNC</Button>";     
+                             //<Button label="Consultar Textos" v-on:click="abreModal = true;" class="p-button-outlined p-button-info" />;            
+            }).catch((error) => {
+                        this.$toast.add({
+                            severity: 'error', summary: "",
+                            life: 10000
+                        })
+                    })
                 }
-                if (naoAprovadas.includes(textArea[cont])) {
-                textArea[cont] =
-                    "<span style='background:yellow;'>" + textArea[cont] + "</span>";
-                }
-                palavras += " " + textArea[cont];
-                cont++;
-            }
-            document.getElementById("modalText").innerHTML =
-                "<h1>Texto Verificado</h1><p>" + palavras + "</p><button onclick='fecharModal()'>Fechar</button>";
-        },
-        buscarTexto(){
-            axios.get("http://localhost:8081/search/texto/" + this.texto).then((response) => {
-                
-                this.texto = ""
-                response.data.forEach(p => {
-                    if(p.aprovada == 0){
-                        p.palavra.style.color="red"
-                    }
-                    this.texto += p.palavra
-                });
-                console.log(response.data);
-            })
 
-                 
-        },
+           
+        
+    },
         buscar() {
-            this.word = [{}];
-
+            this.word = [{}];            
             if (this.palavra == "") {
                 this.$toast.add({
                     severity: 'warn', summary: ' Digite uma palavra para continuar a busca',
@@ -221,7 +186,8 @@ export default {
             } else {
                 axios.get("http://localhost:8081/search/" + this.palavra)
                     .then((response) => {
-                        if (response.data !== "") {
+                        
+                        if (response.data !== "") {                            
                             this.displayModalBusca = true;
                             if(response.data[0].aprovada == true){
                                 response.data[0].aprovada = "Sim"
@@ -229,6 +195,7 @@ export default {
                             else{
                                 response.data[0].aprovada = "Não"
                             }
+                           
                             this.word = response.data;
                             
                         } else {

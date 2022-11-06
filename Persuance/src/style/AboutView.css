@@ -60,3 +60,10 @@
 .grid{
     background-color: rgba(242, 248, 248, 0.452);
 }
+
+.p-dialog-content{
+    width: 700px;
+}
+.p-dialog-header{
+    width: 700px;
+}
