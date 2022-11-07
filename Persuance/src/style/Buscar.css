@@ -57,3 +57,8 @@
 .p-inputtext.p-component{
     width: 400px !important;
 }
+.p-component.p-component * {
+    box-sizing: border-box;
+    width: 100%;
+    
+} 

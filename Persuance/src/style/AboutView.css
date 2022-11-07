@@ -67,3 +67,8 @@
 .p-dialog-header{
     width: 700px;
 }
+.p-component.p-component * {
+    box-sizing: border-box;
+    width: 100%;
+    
+} 
