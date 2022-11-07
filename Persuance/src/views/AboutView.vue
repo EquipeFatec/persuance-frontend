@@ -162,7 +162,7 @@ export default {
                             cont++;
                         }          
                         document.getElementById("modalText").innerHTML = 
-                            "<h1>Texto Verificado</h1><p>" + palavras + "</p><Button v-on:onclick='abreModal = true;'>VTNC</Button>";     
+                            "<h1>Texto Verificado</h1><p>" + palavras + "</p>";     
                              //<Button label="Consultar Textos" v-on:click="abreModal = true;" class="p-button-outlined p-button-info" />;            
             }).catch((error) => {
                         this.$toast.add({

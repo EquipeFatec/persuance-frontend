@@ -29,7 +29,7 @@
       </template>
       <template #empty>Nenhuma palavra disponivel na base de dados</template>
       <template #loading>Carregando palavras</template>
-      <Column field="palavra" header="palavra" sortable style="min-width: 14rem">
+      <Column field="palavra" header="Palavra" sortable style="min-width: 14rem">
         <template #body="{ data }">
           {{ data.palavra }}
         </template>
@@ -38,7 +38,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar por letra"
           />
         </template>
       </Column>
@@ -51,7 +51,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -66,7 +66,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -79,7 +79,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -92,7 +92,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -105,7 +105,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -127,7 +127,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -140,7 +140,7 @@
             type="text"
             v-model="filterModel.value"
             class="p-column-filter"
-            placeholder="Search by name"
+            placeholder="Pesquisar"
           />
         </template>
       </Column>
@@ -176,16 +176,16 @@ export default {
       loading: true,
       words: null,
       filters: {
-        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'palavra': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'traducao': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'aprovada': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'significado': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'conjucacao': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'exemploAprovado': { value: null, matchMode: FilterMatchMode.CONTAINS },
+        'global': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'palavra': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'traducao': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'aprovada': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'significado': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'conjucacao': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'exemploAprovado': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         'classeGramatical': { value: null, matchMode: FilterMatchMode.EQUALS },
-        'categoria': { value: null, matchMode: FilterMatchMode.CONTAINS },
-        'revisao': { value: null, matchMode: FilterMatchMode.CONTAINS },
+        'categoria': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'revisao': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
       },
       classesGramaticais:[
         "Substantivo",
