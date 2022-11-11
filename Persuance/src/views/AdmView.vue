@@ -10,7 +10,7 @@
             <Dropdown class="dropdown" id="dropdown" v-model="word.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
             <input type="text" v-model="word.significado" name="Significado" placeholder="Significado" id="significado">
             <input type="text" v-model="word.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
-            <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="cities" placeholder="Classe gramatical" optionLabel="name" />
+            <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="classesGramaticais" placeholder="Classe gramatical" optionLabel="name" />
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
             <button class="button" :modal="true" @click="buscar">Editar</button>
             <button class="button" :modal="true" @click="salvar">Salvar</button>
@@ -55,20 +55,22 @@ export default {
             word: [{}],
             displayDeleteWord: false,
             palavra: "",
-            cities: [
-                { name: 'Verbo', code: 'Verbo' },
-                { name: 'Substantivo', code: 'Substantivo' },
-                { name: '', code: '' },
-                { name: '', code: '' },
-                { name: '', code: '' }
+            classesGramaticais: [
+                // { name: 'Verbo', code: 'Verbo' },
+                // { name: 'Substantivo', code: 'Substantivo' },
+                // { name: '', code: '' },
+                // { name: '', code: '' },
+                // { name: '', code: '' }
             ],
             opcoes: [
                 { name: 'Sim', code: 'true' },
                 { name: 'Não', code: 'false' },
             ],
-            
 		}
 	},
+    mounted() {
+        this.buscarClassesGramaticais()
+    },
     methods:{
         buscar() {
             this.word = [];
@@ -141,10 +143,17 @@ export default {
         cancelarExclusao(){
             this.displayDeleteWord = false;
         },
+        buscarClassesGramaticais(){
+            axios.get("http://localhost:8081/search/classes").then((response) => {
+                response.data.forEach(classe => {
+                    let c = classe.toLowerCase()
+                    this.classesGramaticais.push({name: c[0].toUpperCase() + c.substring(1), code: classe})
+                });
+            })
+        },
         resetForm(){
             this.palavra = '';
             this.word=[];
-            
         }
 
     }
