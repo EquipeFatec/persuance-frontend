@@ -1,4 +1,5 @@
 <template>
+    <Toast/>
     <div class="aboutTeste">
         <Menu></Menu>
         <div class="card">
@@ -18,6 +19,15 @@
         </div>
 
     </div>
+
+    <Dialog header="Exclusão" v-model:visible="displayDeleteWord" :style="{width: '20vw'}" :modal="true">
+        <div :style="{textAlign:'center'}">
+            <p> Confirma a exclusão da palavra? </p><br/>
+            <Button type="button" label="Sim" @click="confirmarExclusao" :style="{width: '7vw', marginRight: '2px'}" />
+            <Button type="button" label="Não" @click="cancelarExclusao" :style="{width: '7vw'}" />
+        </div>
+    </Dialog> 
+
 </template>
 
 <script>
@@ -27,6 +37,7 @@ import axios from "axios";
 import Dropdown from 'primevue/dropdown';
 import SplitButton from 'primevue/splitbutton';
 import Menu from '../components/Menu.vue';
+import Button from 'primevue/button';
 
 export default {
     name: 'AdmView',
@@ -36,12 +47,13 @@ export default {
         axios,
         Dropdown,
         SplitButton, 
+        Button,
         Menu
-
     },
     data() {
         return {
             word: [{}],
+            displayDeleteWord: false,
             palavra: "",
             cities: [
                 { name: 'Verbo', code: 'Verbo' },
@@ -115,7 +127,19 @@ export default {
                 }) 
         }, 
         excluir(){
-
+            this.displayDeleteWord = true;
+        },
+        confirmarExclusao(){
+            axios.delete("http://localhost:8081/search/deleta/" + this.palavra).then(() => {
+                this.displayDeleteWord = false;
+                this.$toast.add({severity:'sucess', summary:'Palavra excluída com sucesso', life: 3000});
+            }).catch(() => {
+                this.displayDeleteWord = false;
+                this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar a exclusão'})
+            })
+        },
+        cancelarExclusao(){
+            this.displayDeleteWord = false;
         },
         resetForm(){
             this.palavra = '';
