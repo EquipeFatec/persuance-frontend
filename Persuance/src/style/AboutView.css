@@ -67,8 +67,18 @@
 .p-dialog-header{
     width: 700px;
 }
-.p-component.p-component * {
+.p-dialog.p-component.p-ripple-disabled.busca{
+    align-items: center;
+    box-shadow: none;
+}
+.p-dialog.p-component.p-ripple-disabled.busca .p-dialog-header{
+    width: 1180px;
+}
+.p-dialog.p-component.p-ripple-disabled.busca .p-dialog-content{
+    width: 1180px !important;
+}
+/* .p-component.p-component * {
     box-sizing: border-box;
     width: 100%;
     
-} 
+}  */

@@ -21,10 +21,10 @@
         <Dialog header="Consulta de texto" v-model:visible="abreModal" :style="{width: '50vw'}" :modal="true">
             <div class="grid">
                 <div class="col-12 md:col-4 p-5">
-                    <ScrollPanel style="width: 100%; height: 1000px">
+                    <ScrollPanel style="width: 100%; height: 500px">
                         <div id="baseModal" class="search-text">
                             <div id="modalText" class="search-text-modal">
-                                <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="70" rows="30"></textarea><br/>
+                                <textarea placeholder= "Insira seu texto aqui" name="" id="textArea" cols="70" rows="10"></textarea><br/>
                                 <Button label = "Verificar" v-on:click="verifica()" class="btn-p-button-outlined p-button-info"></Button>                                
                             </div>
                         </div>
