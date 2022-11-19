@@ -12,8 +12,8 @@ import PalavraList from '../views/PalavraListView.vue'
 const routes = [
   {
     path: '/',
-    name: 'about',
-    component: AboutView
+    name: 'home',
+    component: BuscarView
   },
   {
     path: '/tela-upload',
@@ -21,9 +21,9 @@ const routes = [
     component: TelaUpload
   },
   {
-    path: '/home',
-    name: 'home',
-    component: BuscarView
+    path: '/about',
+    name: 'about',
+    component: AboutView
   },
   {
     path: '/administrador',
@@ -57,19 +57,19 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from) => {
-//   // ...
-//   // explicitly return false to cancel the navigation
-//   const estaAutenticado = localStorage.getItem('userToken');
+router.beforeEach((to, from) => {
+  // ...
+  // explicitly return false to cancel the navigation
+  const estaAutenticado = localStorage.getItem('userToken');
 
-//   // booleana que verifica se usuario esta numa tela pertencente aos admins
-//   const isTelaAdmin = to.name.includes('tela-upload') || 
-//                       to.name.includes('palavra-list') ||
-//                       to.name.includes('about')
+  // booleana que verifica se usuario esta numa tela pertencente aos admins
+  const isTelaAdmin = to.name.includes('tela-upload') || 
+                      to.name.includes('palavra-list') ||
+                      to.name.includes('about')
 
-//   if (isTelaAdmin && !estaAutenticado) {
-//     return { name: 'about' }
-//   }
-// })
+  if (isTelaAdmin && !estaAutenticado) {
+    return { name: 'home' }
+  }
+})
 
 export default router

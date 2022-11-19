@@ -24,7 +24,7 @@ export default {
 					icon: 'pi pi-search',
 					command: () => {
 						//this.$toast.add({severity:'success', summary:'Updated', detail:'Data Updated', life: 3000});
-                        window.location.href= "/";
+                        window.location.href= "/#/about";
 					}
 				},
 				{
@@ -50,7 +50,7 @@ export default {
 					command: () => {
 						this.$toast.add({ severity: 'success', summary: 'Logout', detail: 'Logout Realizado', life: 3000});
 						localStorage.removeItem("userToken");
-						window.location.href="/#/home";
+						window.location.href="/#/";
 					}
 				},
 			]
