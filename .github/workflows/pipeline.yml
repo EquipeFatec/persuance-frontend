@@ -19,3 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Test
+        run: cd scripts
+            mocha menuPersance.spec.js
