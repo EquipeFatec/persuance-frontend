@@ -22,4 +22,4 @@ jobs:
       
       - name: Test
         run: cd scripts
-            mocha menuPersance.spec.js
+            - mocha menuPersance.spec.js
