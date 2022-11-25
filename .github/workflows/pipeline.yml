@@ -19,8 +19,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-  
-  script:
-    runs-on: self-hosted
-      - cd scripts
-      - mocha menuPersance.spec.js
+        
+      - name: Test
+        run: |
+          cd scripts
+          mocha menuPersance.spec.js
