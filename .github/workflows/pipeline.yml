@@ -23,4 +23,5 @@ jobs:
       - name: Test
         run: |
           cd scripts
+          npm install mocha
           mocha menuPersance.spec.js
