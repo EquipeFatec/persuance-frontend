@@ -22,6 +22,7 @@ jobs:
         
       - name: Test
         run: |
+          cd Persuance
           npm install mocha
           cd scripts
           mocha menuPersance.spec.js
