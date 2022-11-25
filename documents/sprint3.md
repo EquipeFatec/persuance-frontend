@@ -1,4 +1,4 @@
-# ENTREGÁVEIS - SPRINT 2
+# ENTREGÁVEIS - SPRINT 3
 
 # :desktop_computer: Código
 - REQ7 - O sistema deve receber um texto e identificar as palavras aprovadas ou não (adicional)
