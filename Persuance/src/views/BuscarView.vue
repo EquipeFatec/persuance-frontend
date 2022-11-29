@@ -21,6 +21,10 @@
 
         <Dialog header="Consulta de texto" v-model:visible="abreModal" :style="{width: '50vw'}" :modal="true">
             <div class="grid">
+
+                <InputText id="inputSearchWord" v-model="palavra" placeholder="Pesquisar palavra" :style="{ width:'200px !important', marginLeft: '60%'}"/>
+                <Button id="buttonSearchWord" type="button" icon="pi pi-search" class="search" style="margin-left: 5px" @click="buscar" />
+
                 <div class="col-12 md:col-4 p-5">
                     <ScrollPanel style="width: 100%; height: 500px">
                         <div id="baseModal" class="search-text">
