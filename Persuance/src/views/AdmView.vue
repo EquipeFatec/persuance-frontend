@@ -14,7 +14,7 @@
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
             <button class="button" :modal="true" @click="buscar">Editar</button>
             <button class="button" :modal="true" @click="salvar">Salvar</button>
-            <button class="button" :modal="true" @click="excluir">Excluir</button>
+            <!-- <button class="button" :modal="true" @click="excluir">Excluir</button> -->
             
         </div>
 
@@ -128,21 +128,6 @@ export default {
                     this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar o cadastro'})
                 }) 
         }, 
-        excluir(){
-            this.displayDeleteWord = true;
-        },
-        confirmarExclusao(){
-            axios.delete("http://localhost:8081/search/deleta/" + this.palavra).then(() => {
-                this.displayDeleteWord = false;
-                this.$toast.add({severity:'sucess', summary:'Palavra excluída com sucesso', life: 3000});
-            }).catch(() => {
-                this.displayDeleteWord = false;
-                this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar a exclusão'})
-            })
-        },
-        cancelarExclusao(){
-            this.displayDeleteWord = false;
-        },
         buscarClassesGramaticais(){
             axios.get("http://localhost:8081/search/classes").then((response) => {
                 response.data.forEach(classe => {

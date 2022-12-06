@@ -144,8 +144,22 @@
           />
         </template>
       </Column>
+      <Column :exportable="false" style="min-width:8rem">
+        <template #body="slotProps">
+          <Button icon="pi pi-trash" class="p-button-rounded" @click="excluir(slotProps.data)" />
+        </template>
+      </Column>
     </DataTable>
   </div>
+
+  <Dialog header="Exclusão" v-model:visible="displayDeleteWord" :style="{width: '10vw'}" :modal="true">
+    <div :style="{textAlign:'center'}">
+      <p> Confirma a exclusão da palavra? </p><br/>
+      <Button type="button" label="Sim" @click="confirmarExclusao" :style="{width: '7vw', marginRight: '2px'}" />
+      <Button type="button" label="Não" @click="cancelarExclusao" :style="{width: '7vw'}" />
+    </div>
+  </Dialog> 
+
 </template>
 
 <script>
@@ -159,6 +173,8 @@ import axios from "axios";
 import { FilterMatchMode } from "primevue/api";
 import PalavraService from "../services/PalavraService";
 import Menu from '../components/Menu.vue';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 
 export default {
   name: "PalavraListView",
@@ -169,12 +185,16 @@ export default {
     ColumnGroup,
     Row,
     Dropdown,
-    Menu
+    Menu,
+    Button,
+    Dialog
   },
   data() {
     return {
       loading: true,
       words: null,
+      wordToDelete: null,
+      displayDeleteWord: false,
       filters: {
         'global': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         'palavra': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -210,6 +230,31 @@ export default {
       this.loading = false;
     });
   },
+  methods:{
+    excluir(palavra){
+      this.wordToDelete = palavra;
+      console.log(this.wordToDelete)
+      this.displayDeleteWord = true;
+    },
+    confirmarExclusao(){
+            axios.delete("http://localhost:8081/search/deleta/" + this.wordToDelete.id).then(() => {
+                this.displayDeleteWord = false;
+                this.$toast.add({severity:'sucess', summary:'Palavra excluída com sucesso', life: 3000});
+                this.loading = true;
+                this.palavraService.getPalavras().then(data => {
+                    this.words = data;
+                  }).finally(() => {
+                    this.loading = false;
+                  });
+            }).catch(() => {
+                this.displayDeleteWord = false;
+                this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar a exclusão'})
+            })
+        },
+        cancelarExclusao(){
+            this.displayDeleteWord = false;
+        },
+  }
 };
 </script>
 
