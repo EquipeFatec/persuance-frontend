@@ -107,8 +107,9 @@ export default {
         },
         salvar() {
             if(this.word != []){
+                debugger
                 this.wordToSave = {
-                    id: null,
+                    id: this.word.id,
                     palavra: this.palavra,
                     aprovada: this.word.aprovada.code,
                     conjucacao: this.word.conjucacao,
@@ -119,6 +120,7 @@ export default {
                     significado: this.word.significado,
                     traducao: this.word.traducao,
                 };
+                debugger;
             }
             axios.post("http://localhost:8081/search/save", this.wordToSave).then(() => {
                 this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000, detail:'Palavra cadastrada com sucesso'});
