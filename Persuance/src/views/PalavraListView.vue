@@ -114,7 +114,7 @@
           {{ data.classeGramatical }}
         </template>
         <template #filter="{ filterModel }">
-          <Dropdown v-model="filterModel.value" :options="classesGramaticais" placeholder="Any" class="p-column-filter" :showClear="true">
+          <Dropdown v-model="filterModel.value" :options="classesGramaticaisSimple" placeholder="Any" class="p-column-filter" :showClear="true">
         </Dropdown>
         </template>
       </Column>
@@ -146,6 +146,7 @@
       </Column>
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
+          <Button icon="pi pi-pencil" class="p-button-rounded " @click="edit(slotProps.data)" :style="{marginRight: '2px'}" />
           <Button icon="pi pi-trash" class="p-button-rounded" @click="excluir(slotProps.data)" />
         </template>
       </Column>
@@ -159,6 +160,30 @@
       <Button type="button" label="Não" @click="cancelarExclusao" :style="{width: '7vw'}" />
     </div>
   </Dialog> 
+
+  <Dialog header="Edição" v-model:visible="displayEditWord" :modal="true">
+    <div class="dialog">
+      <p>Palavra</p>
+      <input type="text" v-model="selectedWord.palavra" name="Palavra" placeholder="Palavra" id="palavra">
+      <p>Conjugação</p>
+      <input type="text" v-model="selectedWord.conjucacao" name="Conjucacao" placeholder="Conjunção" id="conjucacao">
+      <p>Tradução</p>
+      <input type="text" v-model="selectedWord.traducao" name="Tradução" placeholder="Tradução" id="traducao">
+      <p>Aprovada</p>
+      <Dropdown class="dropdown" id="dropdown" v-model="selectedWord.aprovada" :options="opcoes" placeholder="Aprovada" optionLabel="name" />
+      <p>Significado</p>
+      <input type="text" v-model="selectedWord.significado" name="Significado" placeholder="Significado" id="significado">
+      <p>Exemplo Aprovado</p>
+      <input type="text" v-model="selectedWord.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
+      <p>Classe Gramatical</p>
+      <Dropdown class="dropdown" id="dropdown" v-model="selectedWord.classeGramatical" :options="classesGramaticais" placeholder="Classe gramatical" optionLabel="name" />
+      <p>Categoria</p>
+      <input type="text" v-model="selectedWord.categoria" name="Categoria" placeholder="Categoria" id="categoria">
+      <button class="button" :modal="true" @click="salvar">Salvar</button> 
+    </div>
+  </Dialog> 
+
+
 
 </template>
 
@@ -193,8 +218,9 @@ export default {
     return {
       loading: true,
       words: null,
-      wordToDelete: null,
+      selectedWord: null,
       displayDeleteWord: false,
+      displayEditWord: false,
       filters: {
         'global': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         'palavra': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -207,16 +233,12 @@ export default {
         'categoria': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         'revisao': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
       },
-      classesGramaticais:[
-        "Substantivo",
-        "Advérbio",
-        "Adjetivo",
-        "Preposição",
-        "Verbo",
-        "Conjunção",
-        "Pronome",
-        "Artigo"
-      ]
+      classesGramaticais: [],
+      classesGramaticaisSimple: [],
+      opcoes: [
+        { name: 'Sim', code: 'true' },
+        { name: 'Não', code: 'false' },
+      ],
     };
   },
   palavraService: null,
@@ -224,6 +246,7 @@ export default {
     this.palavraService = new PalavraService();
   },
   mounted() {
+    this.buscarClassesGramaticais()
     this.palavraService.getPalavras().then(data => {
       this.words = data;
     }).finally(() => {
@@ -231,35 +254,77 @@ export default {
     });
   },
   methods:{
+    buscarClassesGramaticais(){
+          axios.get("http://localhost:8081/search/classes").then((response) => {
+            response.data.forEach(classe => {
+              let c = classe.toLowerCase()
+              this.classesGramaticais.push({name: c[0].toUpperCase() + c.substring(1), code: classe})
+              this.classesGramaticaisSimple.push(classe)
+          });
+        })
+    },
+    edit(palavra){
+      this.selectedWord = palavra;
+      this.displayEditWord = true;
+    },
     excluir(palavra){
-      this.wordToDelete = palavra;
-      console.log(this.wordToDelete)
+      this.selectedWord = palavra;
       this.displayDeleteWord = true;
     },
-    confirmarExclusao(){
-            axios.delete("http://localhost:8081/search/deleta/" + this.wordToDelete.id).then(() => {
-                this.displayDeleteWord = false;
-                this.$toast.add({severity:'sucess', summary:'Palavra excluída com sucesso', life: 3000});
-                this.loading = true;
+    reloadWords(){
+      this.loading = true;
                 this.palavraService.getPalavras().then(data => {
                     this.words = data;
                   }).finally(() => {
                     this.loading = false;
                   });
+    },
+    confirmarExclusao(){
+            axios.delete("http://localhost:8081/search/deleta/" + this.selectedWord.id).then(() => {
+                this.displayDeleteWord = false;
+                this.$toast.add({severity:'success', summary:'Palavra excluída com sucesso', life: 3000});
+                this.reloadWords();
+      
             }).catch(() => {
                 this.displayDeleteWord = false;
                 this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar a exclusão'})
             })
         },
-        cancelarExclusao(){
-            this.displayDeleteWord = false;
-        },
+    cancelarExclusao(){
+      this.displayDeleteWord = false;
+    },
+    salvar() {
+            if(this.selectedWord != []){
+                debugger
+                this.wordToSave = {
+                    id: this.selectedWord.id,
+                    palavra: this.selectedWord.palavra,
+                    aprovada: this.selectedWord.aprovada.code,
+                    conjucacao: this.selectedWord.conjucacao,
+                    categoria: this.selectedWord.categoria,
+                    classeGramatical: this.selectedWord.classeGramatical.code,
+                    exemploAprovado: this.selectedWord.exemploAprovado,
+                    revisao: this.selectedWord.revisao + 1,
+                    significado: this.selectedWord.significado,
+                    traducao: this.selectedWord.traducao,
+                };
+            }
+            axios.post("http://localhost:8081/search/save", this.wordToSave).then(() => {
+                this.$toast.add({severity:'success', summary:'Palavra ok', life: 3000, detail:'Palavra editada com sucesso'});
+                this.displayEditWord = false;
+                this.reloadWords();
+            })
+            .catch(() => {
+              this.$toast.add({severity:'error', summary:'Erro', detail:'Não foi possível realizar a edição'})
+            }) 
+        }, 
   }
 };
 </script>
 
 <style>
 
-@import "../style/PalavraList.css"
+@import "../style/PalavraList.css";
+@import "../style/Adm.css";
 
 </style>

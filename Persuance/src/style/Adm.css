@@ -111,3 +111,22 @@ button:hover {
     left: 21px;
     top: 21px;
 }
+
+.dialog input {
+    height: 30px;
+    /*Arredonda as bordas*/
+    border-radius: 5px;
+    margin-bottom: 10px;
+    /*solid é para que a borda seja continua*/
+    border: solid 1px rgba(61, 61, 61, 0.719);
+    padding-left: 15px;
+    width: 100%;
+}
+
+
+/*Quando seu input estiver selecionado vai acontecer ...*/
+.dialog input:focus {
+    /*modifica a borda que vem por padrão*/
+    outline: none;
+    border: solid 2px rgb(110, 74, 141);
+}

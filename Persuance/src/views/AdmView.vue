@@ -12,10 +12,7 @@
             <input type="text" v-model="word.exemploAprovado" name="Exemplo aprovado" placeholder="Exemplo aprovado" id="exemplo">
             <Dropdown class="dropdown" id="dropdown" v-model="word.classeGramatical" :options="classesGramaticais" placeholder="Classe gramatical" optionLabel="name" />
             <input type="text" v-model="word.categoria" name="Categoria" placeholder="Categoria" id="categoria">
-            <button class="button" :modal="true" @click="buscar">Editar</button>
-            <button class="button" :modal="true" @click="salvar">Salvar</button>
-            <!-- <button class="button" :modal="true" @click="excluir">Excluir</button> -->
-            
+            <button class="button" :modal="true" @click="salvar">Salvar</button>            
         </div>
 
     </div>
@@ -107,7 +104,6 @@ export default {
         },
         salvar() {
             if(this.word != []){
-                debugger
                 this.wordToSave = {
                     id: this.word.id,
                     palavra: this.palavra,
@@ -120,10 +116,9 @@ export default {
                     significado: this.word.significado,
                     traducao: this.word.traducao,
                 };
-                debugger;
             }
             axios.post("http://localhost:8081/search/save", this.wordToSave).then(() => {
-                this.$toast.add({severity:'sucess', summary:'Palavra ok', life: 3000, detail:'Palavra cadastrada com sucesso'});
+                this.$toast.add({severity:'success', summary:'Palavra ok', life: 3000, detail:'Palavra cadastrada com sucesso'});
                 this.resetForm();
             })
                 .catch(() => {
