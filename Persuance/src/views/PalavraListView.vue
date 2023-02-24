@@ -18,6 +18,7 @@
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       currentPageReportTemplate="Exibindo {first} à {last} do total de {totalRecords} registros"
       responsiveLayout="scroll"
+      
     >
       <template #header>
         <div class="flex justify-content-center align-items-center">
@@ -29,7 +30,13 @@
       </template>
       <template #empty>Nenhuma palavra disponivel na base de dados</template>
       <template #loading>Carregando palavras</template>
-      <Column field="palavra" header="Palavra" sortable style="min-width: 14rem">
+      <Column :exportable="false">
+        <template #body="slotProps">
+          <Button icon="pi pi-pencil" class="p-button-rounded p-button-text" @click="edit(slotProps.data)" :style="{marginRight: '2px'}" />
+          <Button icon="pi pi-trash" class="p-button-rounded p-button-text" @click="excluir(slotProps.data)" />
+        </template>
+      </Column>
+      <Column field="palavra" header="Palavra" sortable >
         <template #body="{ data }">
           {{ data.palavra }}
         </template>
@@ -144,12 +151,7 @@
           />
         </template>
       </Column>
-      <Column :exportable="false" style="min-width:8rem">
-        <template #body="slotProps">
-          <Button icon="pi pi-pencil" class="p-button-rounded " @click="edit(slotProps.data)" :style="{marginRight: '2px'}" />
-          <Button icon="pi pi-trash" class="p-button-rounded" @click="excluir(slotProps.data)" />
-        </template>
-      </Column>
+      
     </DataTable>
   </div>
 
